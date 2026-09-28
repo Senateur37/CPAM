@@ -26,12 +26,10 @@ FROM python:3.11-slim AS python-builder
 
 WORKDIR /build
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential libpq-dev && rm -rf /var/lib/apt/lists/*
-
 COPY CPAM/requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
+
 
 # ── Stage 3 : Image finale ────────────────────────────────────────
 FROM python:3.11-slim
