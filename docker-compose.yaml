@@ -16,15 +16,9 @@ services:
     expose:
       - "80"
     environment:
-      # ── Django ────────────────────────────────────────────────
       SECRET_KEY: ${SECRET_KEY}
       DEBUG: ${DEBUG:-False}
-      # ── Base de données (fournie par Coolify) ─────────────────
-      DB_NAME:     ${DB_NAME:-cpam}
-      DB_USER:     ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST:     ${DB_HOST}
-      DB_PORT:     ${DB_PORT:-5432}
+      DATABASE_URL: ${DATABASE_URL}
     volumes:
       # Médias uploadés (photos, fichiers…) — persistant
       - media_data:/app/backend/media
