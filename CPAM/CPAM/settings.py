@@ -91,9 +91,15 @@ WSGI_APPLICATION = 'CPAM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-_DATABASE_URL = config('DATABASE_URL', default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
 DATABASES = {
-    'default': dj_database_url.parse(_DATABASE_URL, conn_max_age=600)
+    'default': {
+        'ENGINE':   'django.db.backends.postgresql',
+        'NAME':     config('DB_NAME',     default='cpam'),
+        'USER':     config('DB_USER',     default='cpam_user'),
+        'PASSWORD': config('DB_PASSWORD', default=''),
+        'HOST':     config('DB_HOST',     default='localhost'),
+        'PORT':     config('DB_PORT',     default='5432'),
+    }
 }
 
 
