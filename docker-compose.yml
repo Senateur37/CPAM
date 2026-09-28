@@ -1,0 +1,43 @@
+services:
+
+  # ──────────────────────────────────────────────────────────────
+  # Base de données PostgreSQL (service séparé, interne)
+  # ──────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cpam}
+      POSTGRES_USER: ${POSTGRES_USER:-cpam_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cpam_user} -d ${POSTGRES_DB:-cpam}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ──────────────────────────────────────────────────────────────
+  # Application CPAM — conteneur unique (Frontend + Backend)
+  # Un seul domaine, un seul port (80)
+  # ──────────────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-cpam_user}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-cpam}
+    volumes:
+      - media_data:/app/backend/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  media_data:
