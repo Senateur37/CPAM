@@ -27,7 +27,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-uw&ev!i$#(rx0)(v(y9(0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,testserver', cast=Csv())
+ALLOWED_HOSTS = [
+    'cpam.sacko-tech.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 
@@ -162,8 +166,8 @@ REST_FRAMEWORK = {
 # django-cors-headers
 # https://github.com/adamchainz/django-cors-headers
 
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:5175,http://127.0.0.1:5175',
-    cast=Csv()
-)
+CORS_ALLOWED_ORIGINS = [
+    'https://cpam.sacko-tech.com',
+    'http://localhost:5175',
+    'http://127.0.0.1:5175',
+]
