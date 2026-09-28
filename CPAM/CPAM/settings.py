@@ -91,14 +91,22 @@ WSGI_APPLICATION = 'CPAM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# Une seule variable DATABASE_URL fournie par Coolify
-DATABASES = {
-    'default': dj_database_url.config(
-        env='DATABASE_URL',
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-    )
-}
+if DEBUG:
+    # Mode développement / test : SQLite local
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    # Mode production : PostgreSQL via Coolify
+    DATABASES = {
+        'default': dj_database_url.config(
+            env='DATABASE_URL',
+            conn_max_age=600,
+        )
+    }
 
 
 # Password validation
