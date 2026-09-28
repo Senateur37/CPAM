@@ -13,8 +13,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     environment:
       # ── Django ────────────────────────────────────────────────
       SECRET_KEY: ${SECRET_KEY}
